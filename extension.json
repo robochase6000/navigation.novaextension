@@ -1,7 +1,7 @@
 {
     
    "activationEvents": ["*"],
-   "bugs": "https://github.com/robochas6000/navigation.novaextension/issues",
+   "bugs": "https://github.com/robochase6000/navigation.novaextension/issues",
    "categories": ["commands"],
    "commands": {
      "editor": [
