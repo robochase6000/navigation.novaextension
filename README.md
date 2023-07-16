@@ -2,7 +2,7 @@
 
 ## Details
 
-| Menu Item              | Binding         |
-| ---------------------- | --------------- |
-| **Navigate Backward**  | `Shift-⌘--`     |
-| **Navigate Forward**   | `Shift-⌘-=`     |
+| Menu Item              | Binding         |                        |
+| ---------------------- | --------------- | ---------------------- |
+| **Navigate Backward**  | `Shift-⌘--`     | "Shift+Command+Minus"  |
+| **Navigate Forward**   | `Shift-⌘-=`     | "Shift+Command+Equals" |
