@@ -1,5 +1,4 @@
 {
-    
    "activationEvents": ["*"],
    "bugs": "https://github.com/robochase6000/navigation.novaextension/issues",
    "categories": ["commands"],
@@ -19,6 +18,24 @@
        }
      ]
    },
+   "config": [
+      {
+         "key": "navigation.historySize",
+         "type": "number",
+         "required": true,
+         "default": 100,
+         "title": "History Size",
+         "description":  "How many history entries should be saved in memory at once. A number that isn't obscenely high is probably best.\n\nSuggested value:100"
+      },
+      {
+         "key": "navigation.logDebugMessages",
+         "type": "bool",
+         "required": true,
+         "default": false,
+         "title": "Log Debug Messages",
+         "description":  "If enabled, messages about activity should start appearing in the Extension Console."
+      },
+   ],
    "description": "Enables hotkeys for navigating backward and forward through your code!",
    "entitlements": {},
    "homepage": "https://github.com/robochase6000/navigation.novaextension",
@@ -27,5 +44,5 @@
    "name": "Navigation",
    "organization": "robochase6000",
    "repository": "https://github.com/robochase6000/navigation.novaextension",
-   "version": "1.0.3"
+   "version": "1.0.4",
 }

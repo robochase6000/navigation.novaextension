@@ -25,6 +25,38 @@ navigatingToDifferentFile = false
 
 
 //========================================================
+// configs
+//========================================================
+// HISTORY SIZE
+historySize = nova.config.get("navigation.historySize")
+nova.config.onDidChange("navigation.historySize", (newValue, oldValue) => { 
+    if (historySize != newValue)
+    {
+        console.log("historySize changed from " + oldValue + " to " + newValue)
+        historySize = newValue   
+    }
+})
+
+// LOGGING DEBUG MESSAGES
+logDebugMessages = nova.config.get("navigation.logDebugMessages")
+setLogDebugMessagesEnabled(logDebugMessages, true)
+nova.config.onDidChange("navigation.logDebugMessages", (newValue, oldValue) => { 
+    setLogDebugMessagesEnabled(newValue, false)
+})
+function setLogDebugMessagesEnabled(newValue, forceUpdate)
+{
+    if (logDebugMessages != newValue || forceUpdate)
+    {
+        console.log("logDebugMessages set to " + newValue)
+        logDebugMessages = newValue
+        debugOptions.logChangeMessages = newValue
+        debugOptions.logHistory = newValue
+        debugOptions.logNavigationMessages = newValue
+    }
+}
+
+
+//========================================================
 // commands
 //========================================================
 nova.commands.register("navigation.forward", (editor) => { navigateForward() });
@@ -226,6 +258,17 @@ function push(waypoint)
     trail.push(waypoint);
     currentIndex = trail.length - 1// pushing should always put as at the end of the trail
     
+    if (trail.length > historySize)
+    {
+        var amountToRemove = trail.length - historySize
+        trail.splice(0, amountToRemove)
+        
+        // slide our index over, and clamp to stay in bounds.  i think this is all that's needed?
+        currentIndex -= amountToRemove 
+        currentIndex = clamp(currentIndex, 0, trail.length - 1)
+    }
+    
+    
     logTrailMessage("pushed", waypoint)
 }
 
@@ -298,9 +341,9 @@ function logHistory()
     for ( var i = 0; i < trail.length; i++)
     {
         var waypoint = trail[i]
-        var navChar = ""
-        if (i == currentIndex){ navChar = "*" }
+        var navChar = "  "
+        if (i == currentIndex){ navChar = "=>" }
             
-        console.log("  " + navChar + " " + i + "/" + trail.length + "- " + waypoint.line + " " + waypoint.path)
+        console.log("    " + navChar + " " + i + "/" + trail.length + "- " + waypoint.line + " " + waypoint.path)
     }
 }
