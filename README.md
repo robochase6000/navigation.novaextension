@@ -16,6 +16,11 @@ Some care has been taken to ensure this works alright in Split views, but as of 
 | **Navigate Forward**   | `Shift-⌘-=`     | "Shift+Command+Equals" |
 
 
-This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  Feedback is appreciated :)  
+This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  
 
 Heavily inspired by https://github.com/eahanson/trail.novaextension ... a lot of additional work was done to ensure waypoints are created automatically. Enjoy!
+
+Feedback is appreciated :)
+Please report issues to the github repo - https://github.com/robochase6000/navigation.novaextension/issues
+
+
