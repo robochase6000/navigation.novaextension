@@ -1,4 +1,8 @@
-**Navigation** is an extension for the Nova IDE. It enables hotkeys for navigating backward and forward through your code!
+![Navigation](./extension@4x.png "Navigation")
+
+# Navigation Extension for NOVA IDE
+
+This an extension for the Nova IDE that enables hotkeys for navigating backward and forward through your code!
 
 ## Details
 
