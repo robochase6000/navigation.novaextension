@@ -11,7 +11,9 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 console.log("navigation.novaextension init")
 
 debugOptions = {
-    logHistory:true,
+    logChangeMessages:false,
+    logHistory:false,
+    logNavigationMessages:false,
     logWaypointReplacements:false, // this is spammy, best left off
 }
 
@@ -47,7 +49,11 @@ setInterval(function () {
             }
             else
             {
-                console.log("new text editor, pushing waypoint...")
+                if (debugOptions.logChangeMessages)
+                {
+                    console.log("new text editor, pushing waypoint...")  
+                }
+                
                 push(waypoint(lastActiveTextEditor))
             }
         }
@@ -67,7 +73,10 @@ function checkCurrentFile()
     // if we're in different files, make a new waypoint (i don't believe this should happen)
     if (newWaypoint.path != currentWaypoint.path)
     {
-        console.log("new file path, pushing waypoint...")
+        if (debugOptions.logChangeMessages)
+        {
+            console.log("new file path, pushing waypoint...")
+        }
         push(newWaypoint)
         return
     }
@@ -85,7 +94,10 @@ function checkCurrentFile()
         var activeSelectionRange = newWaypoint.selectionStart - newWaypoint.selectionEnd
         if (activeSelectionRange == 0)
         {
-            console.log("2+ units away, pushing waypoint...")
+            if (debugOptions.logChangeMessages)
+            {
+                console.log("2+ units away, pushing waypoint...")
+            }
             push(newWaypoint)    
         }
         else 
@@ -133,7 +145,10 @@ function navigateForward()
     
     if (currentIndex >= 0 && currentIndex < trail.length)
     {
-        console.log("nav forward, opening waypoint " + currentIndex + "/" + trail.length)
+        if (debugOptions.logNavigationMessages)
+        {
+            console.log("nav forward, opening waypoint " + currentIndex + "/" + trail.length)
+        }
         
         // hack - if we're going back to a different file, flip our goingBackToDifferentFile flag 
         // normally our interval is going to see we've switched text editors and it will push a new waypoint
@@ -169,7 +184,10 @@ function navigateBackward()
     
     if (currentIndex >= 0 && currentIndex < trail.length)
     {
-        console.log("nav backward, opening waypoint " + currentIndex + "/" + trail.length)
+        if (debugOptions.logNavigationMessages)
+        {
+            console.log("nav backward, opening waypoint " + currentIndex + "/" + trail.length)
+        }
         
         // hack - if we're going back to a different file, flip our goingBackToDifferentFile flag 
         // normally our interval is going to see we've switched text editors and it will push a new waypoint
