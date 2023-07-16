@@ -34,7 +34,7 @@
          "default": false,
          "title": "Log Debug Messages",
          "description":  "If enabled, messages about activity should start appearing in the Extension Console."
-      },
+      }
    ],
    "description": "Enables hotkeys for navigating backward and forward through your code!",
    "entitlements": {},
