@@ -11,7 +11,8 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 console.log("navigation.novaextension init")
 
 debugOptions = {
-    logHistory:true
+    logHistory:true,
+    logWaypointReplacements:false, // this is spammy, best left off
 }
 
 intervalDurationInMilliseconds = 100
@@ -63,7 +64,7 @@ function checkCurrentFile()
     newWaypoint = waypoint(lastActiveTextEditor)
     currentWaypoint = trail[currentIndex]
     
-    // if we're in different files, make a new waypoint
+    // if we're in different files, make a new waypoint (i don't believe this should happen)
     if (newWaypoint.path != currentWaypoint.path)
     {
         console.log("new file path, pushing waypoint...")
@@ -75,18 +76,36 @@ function checkCurrentFile()
     // how far did the cursor move within this file?
     lineDiff = Math.abs(newWaypoint.line - currentWaypoint.line)
     columnDiff = Math.abs(newWaypoint.column - currentWaypoint.column)
-    
+
     // if we're 2+ units away, make a new waypoint
-    if (lineDiff > 1 || columnDiff > 1)
+    // disregard column diff here, on purpose, it creates too many entries if you're typing fast, and this isn't what rider does.
+    if (lineDiff > 1/* || columnDiff > 1*/)
     {
-        console.log("2+ units away, pushing waypoint...")
-        push(newWaypoint)
+        
+        var activeSelectionRange = newWaypoint.selectionStart - newWaypoint.selectionEnd
+        if (activeSelectionRange == 0)
+        {
+            console.log("2+ units away, pushing waypoint...")
+            push(newWaypoint)    
+        }
+        else 
+        {
+            if (debugOptions.logWaypointReplacements)
+            {
+                console.log("1 unit away, replacing waypoint...")    
+            }
+            replaceLastWaypointWith(newWaypoint)
+        }
+        
         return
     }
     // if we're 1 unit away, replace the last waypoint.
     else if (lineDiff == 1 || columnDiff == 1)
     {
-        console.log("1 unit away, replacing waypoint...")
+        if (debugOptions.logWaypointReplacements)
+        {
+            console.log("1 unit away, replacing waypoint...")    
+        }
         replaceLastWaypointWith(newWaypoint)
         return
     }
@@ -195,7 +214,10 @@ function push(waypoint)
 function replaceLastWaypointWith(newWaypoint)
 {
     trail[trail.length - 1] = newWaypoint
-    logTrailMessage("replaced", newWaypoint)
+    if (debugOptions.logWaypointReplacements)
+    {
+        logTrailMessage("replaced", newWaypoint)
+    }
 }
 
 function relativePath(path) 
@@ -213,13 +235,21 @@ function waypoint(editor)
     const text = editor.document.getTextInRange(
         new Range(0, editor.document.length)
     );
-    const cursorPosition = editor.selectedRange.start;
+    const selectionStart = editor.selectedRange.start
+    const selectionEnd = editor.selectedRange.end
+    const cursorPosition = selectionStart;
     const lines = text.slice(0, cursorPosition).split("\n");
     const line = lines.length;
     const column = lines.slice(-1)[0].length + 1;
     const path = editor.document.path;
     
-    return { path: path, line: line, column: column };
+    return { 
+        path: path,
+        line: line, 
+        column: column,
+        selectionStart: selectionStart, 
+        selectionEnd: selectionEnd 
+    };
 }
 
 
