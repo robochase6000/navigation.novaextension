@@ -18,4 +18,4 @@ Some care has been taken to ensure this works alright in Split views, but as of 
 
 This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  Feedback is appreciated :)  
 
-Heavily inspired by https://github.com/eahanson/trail.novaextension but it required a lot elbow grease to get the waypoints created automatically.
+Heavily inspired by https://github.com/eahanson/trail.novaextension ... a lot of additional work was done to ensure waypoints are created automatically. Enjoy!
