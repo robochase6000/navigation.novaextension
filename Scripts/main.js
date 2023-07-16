@@ -59,8 +59,10 @@ function setLogDebugMessagesEnabled(newValue, forceUpdate)
 //========================================================
 // commands
 //========================================================
-nova.commands.register("navigation.forward", (editor) => { navigateForward() });
-nova.commands.register("navigation.back", (editor) => { navigateBackward() });
+nova.commands.register("navigation.forwardOneWaypoint", (editor) => { navigateForward_Waypoint() });
+nova.commands.register("navigation.backOneWaypoint", (editor) => { navigateBackward_Waypoint() });
+nova.commands.register("navigation.forwardOneFile", (editor) => { navigateForward_File() });
+nova.commands.register("navigation.backOneFile", (editor) => { navigateBackward_File() });
 
 
 //========================================================
@@ -158,8 +160,10 @@ function checkCurrentFile()
 //========================================================
 // helpers
 //========================================================
-function navigateForward()
+function navigateForward_Waypoint()
 {
+    //console.log("navigateForward_Waypoint")
+    
     var newIndex = currentIndex
     if (trail.length > 0 && newIndex < trail.length - 1)
     {
@@ -196,8 +200,10 @@ function navigateForward()
     logNavigationMessage("forward")
 }
 
-function navigateBackward()
+function navigateBackward_Waypoint()
 {
+    //console.log("navigateBackward_Waypoint")
+
     var newIndex = currentIndex
     
     if (trail.length > 1 && newIndex > 0)
@@ -233,6 +239,66 @@ function navigateBackward()
     }
     
     logNavigationMessage("back")
+}
+
+function navigateForward_File()
+{
+    //console.log("navigateForward_File")
+    
+    if (trail.length == 0 || currentIndex < 0 || currentIndex >= trail.length)
+    {
+        return;
+    }
+    
+    var currentWaypoint = trail[currentIndex]    
+    for (var i = currentIndex + 1; i < trail.length; i++)
+    {
+        var waypoint = trail[i]
+        if (waypoint.path != currentWaypoint.path)
+        {
+            navigatingToDifferentFile = true
+            currentIndex = i
+            
+            if (debugOptions.logNavigationMessages)
+            {
+                console.log("nav forward 1 file, opening waypoint " + currentIndex + "/" + trail.length)
+            }
+            
+            openWaypoint(waypoint)
+            logNavigationMessage("forward 1 file")
+            return
+        }
+    }
+}
+
+function navigateBackward_File()
+{
+    //console.log("navigateBackward_File")
+    
+    if (trail.length == 0 || currentIndex < 0 || currentIndex >= trail.length)
+    {
+        return;
+    }
+    
+    var currentWaypoint = trail[currentIndex]    
+    for (var i = currentIndex - 1; i >= 0; i--)
+    {
+        var waypoint = trail[i]
+        if (waypoint.path != currentWaypoint.path)
+        {
+            navigatingToDifferentFile = true
+            currentIndex = i
+            
+            if (debugOptions.logNavigationMessages)
+            {
+                console.log("nav backward 1 file, opening waypoint " + currentIndex + "/" + trail.length)
+            }
+            
+            openWaypoint(waypoint)
+            logNavigationMessage("back 1 file")
+            return
+        }
+    }
 }
 
 function openWaypoint(waypoint) 

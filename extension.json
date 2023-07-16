@@ -3,20 +3,32 @@
    "bugs": "https://github.com/robochase6000/navigation.novaextension/issues",
    "categories": ["commands"],
    "commands": {
-     "editor": [
-       {
-         "title": "Navigate Forward",
-         "command": "navigation.forward",
-         "when": "*",
-         "shortcut": "shift-cmd-="
-       },
-       {
-         "title": "Navigate Back",
-         "command": "navigation.back",
-         "when": "*",
-         "shortcut": "shift-cmd--"
-       }
-     ]
+      "editor": [
+         {
+            "title": "Navigate Forward",
+            "command": "navigation.forwardOneWaypoint",
+            "when": "*",
+            "shortcut": "shift-cmd-="
+         },
+         {
+            "title": "Navigate Back",
+            "command": "navigation.backOneWaypoint",
+            "when": "*",
+            "shortcut": "shift-cmd--"
+         },
+         {
+            "title": "Navigate Forward 1 File",
+            "command": "navigation.forwardOneFile",
+            "when": "*",
+            "shortcut": "shift-opt-cmd-="
+         },
+         {
+            "title": "Navigate Back 1 File",
+            "command": "navigation.backOneFile",
+            "when": "*",
+            "shortcut": "shift-opt-cmd--"
+         }
+      ]
    },
    "config": [
       {
@@ -44,5 +56,5 @@
    "name": "Navigation",
    "organization": "robochase6000",
    "repository": "https://github.com/robochase6000/navigation.novaextension",
-   "version": "1.0.4"
+   "version": "1.0.5"
 }

@@ -14,6 +14,8 @@ Some care has been taken to ensure this works alright in Split views, but as of 
 | ---------------------- | --------------- | ---------------------- |
 | **Navigate Backward**  | `Shift-⌘--`     | "Shift+Command+Minus"  |
 | **Navigate Forward**   | `Shift-⌘-=`     | "Shift+Command+Equals" |
+| **Navigate Backward 1 File**  | `Shift-option-⌘--`     | "Shift+Option+Command+Minus"  |
+| **Navigate Forward 1 File**   | `Shift-option-⌘-=`     | "Shift+Option+Command+Equals" |
 
 
 This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  
