@@ -7,6 +7,7 @@ This an extension for the Nova IDE that enables hotkeys for navigating backward 
 includes a Sidebar to see your navigation history
 
 ![Sidebar](./sidebar.png "Sidebar")
+<img src="./sidebar.png" height="50%" width="50%" >
 
 ## Details
 
