@@ -117,12 +117,16 @@ setInterval(function () {
             }
             else
             {
-                if (debugOptions.logChangeMessages)
+                var newWaypoint = createWaypoint(lastActiveTextEditor)
+                if (newWaypoint != null)
                 {
-                    console.log("new text editor, pushing waypoint...")  
+                    if (debugOptions.logChangeMessages)
+                    {
+                        console.log("new text editor, pushing waypoint...")  
+                    }
+                    
+                    push(newWaypoint)
                 }
-                
-                push(waypoint(lastActiveTextEditor))
             }
         }
         else
@@ -135,7 +139,12 @@ setInterval(function () {
 function checkCurrentFile()
 {
     // if we moved within the file, replace the last waypoint
-    newWaypoint = waypoint(lastActiveTextEditor)
+    newWaypoint = createWaypoint(lastActiveTextEditor)
+    if (newWaypoint == null)
+    {
+        return
+    }
+    
     currentWaypoint = trail[currentIndex]
     
     // if we're in different files, make a new waypoint (i don't believe this should happen)
@@ -365,6 +374,11 @@ function openWaypoint(waypoint)
 
 function push(waypoint) 
 {
+    if (waypoint == null)
+    {
+        return false
+    }
+    
     if (currentIndex < trail.length - 1)
     {
         // if we're not at the end of the trail, hack off the end.
@@ -390,6 +404,7 @@ function push(waypoint)
     }
     
     logTrailMessage("pushed", waypoint)
+    return true
 }
 
 function replaceLastWaypointWith(newWaypoint)
@@ -404,8 +419,14 @@ function replaceLastWaypointWith(newWaypoint)
     }
 }
 
-function waypoint(editor) 
+function createWaypoint(editor) 
 {
+    const path = editor.document.path;
+    if (path == null || path == "")
+    {
+        return null
+    }
+    
     const text = editor.document.getTextInRange(
         new Range(0, editor.document.length)
     );
@@ -415,7 +436,7 @@ function waypoint(editor)
     const lines = text.slice(0, cursorPosition).split("\n");
     const line = lines.length;
     const column = lines.slice(-1)[0].length + 1;
-    const path = editor.document.path;
+    
     
     return { 
         path: path,
