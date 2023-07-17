@@ -4,6 +4,8 @@ Navigation Sidebar improvements.
 
 Bug fix: Navigation Sidebar now keeps the current entry in focus instead of always auto-scrolling the top
 
+Bug fix: Ensure that bringing a "New File" into focus doesn't cause errors.  It no longer attempts to create a history entry for files that don't have a filepath
+
 ## Version 1.1.0
 
 Navigation Sidebar added where you can see your navigation history.  Double click entries in the sidebar to go there.
