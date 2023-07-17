@@ -1,7 +1,7 @@
 {
    "activationEvents": ["*"],
    "bugs": "https://github.com/robochase6000/navigation.novaextension/issues",
-   "categories": ["commands"],
+   "categories": ["commands", "sidebars"],
    "commands": {
       "editor": [
          {
@@ -27,6 +27,11 @@
             "command": "navigation.backOneFile",
             "when": "*",
             "shortcut": "shift-opt-cmd--"
+         },
+         {
+            "title": "Jump To...",
+            "command": "navigation.jiumpTo",
+            "when": "*"
          }
       ]
    },
@@ -56,5 +61,29 @@
    "name": "Navigation",
    "organization": "robochase6000",
    "repository": "https://github.com/robochase6000/navigation.novaextension",
+   "sidebars": [
+      {
+         "id": "navigation.history",
+         "name": "Navigation History",
+         "smallImage": "sidebar-icon-small",
+         "smallSelectedImage": "sidebar-icon-small-selected",
+         "largeImage": "sidebar-icon-large",
+         "largeSelectedImage": "sidebar-icon-large-selected",
+         "sections": [
+            {
+               "id": "navigation.history.entries",
+               "name": "Navigation History",
+               "allowMultiple": false,
+               "headerCommands": [
+                  {
+                     "command": "clearJumpList",
+                     "title": "Clear",
+                     "tooltip": "Clears all entries from the jump list; a full reset."
+                  }
+               ]
+            }
+         ]
+      }
+   ],
    "version": "1.0.5"
 }
