@@ -12,8 +12,6 @@ includes a Sidebar to see your navigation history
 
 This was designed to emulate the Navigate>Back/Forward functionality you'd typically see in other IDEs.
 
-Some care has been taken to ensure this works alright in Split views, but as of now it's not well battle-tested.
-
 | Menu Item              | Binding         |                        |
 | ---------------------- | --------------- | ---------------------- |
 | **Navigate Backward**  | `Shift-⌘--`     | "Shift+Command+Minus"  |
@@ -23,7 +21,7 @@ Some care has been taken to ensure this works alright in Split views, but as of 
 
 <img src="./menu-commands.png" height="40%" width="40%" >
 
-This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  
+This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  Some care has been taken to ensure this works alright in Split views, but as of now it's not well battle-tested.
 
 Heavily inspired by https://github.com/eahanson/trail.novaextension ... a lot of additional work was done to ensure waypoints are created automatically. Enjoy!
 
