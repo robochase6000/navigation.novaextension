@@ -1,6 +1,6 @@
 class NavigationHistoryDataProvider 
 {
-    _jumpList;
+    _waypoints;
     _currentJumpPosition;
     
     _COLOR_DEFAULT = new Color(ColorFormat.rgb, [0, 0, 0, 1]);
@@ -8,13 +8,13 @@ class NavigationHistoryDataProvider
     
     constructor() 
     {
-        this._jumpList = [];
+        this._waypoints = [];
         this._currentJumpPosition = 0;
     }
     
     setWaypoints(list)
     {
-        this._jumpList = list
+        this._waypoints = list
     }
     
     setCurrentIndex(index) 
@@ -27,7 +27,7 @@ class NavigationHistoryDataProvider
     {
         if(element === null) 
         {
-            return this._jumpList;
+            return this._waypoints;
         }
         
         return [];
@@ -52,7 +52,7 @@ class NavigationHistoryDataProvider
         item.identifier = element.position;
         item.image = null
         
-        item.color = this._jumpList.indexOf(element) === this._currentJumpPosition ?
+        item.color = this._waypoints.indexOf(element) === this._currentJumpPosition ?
             this._COLOR_CURRENT_POSITION : 
             this._COLOR_DEFAULT
         
