@@ -4,6 +4,8 @@
 
 This an extension for the Nova IDE that enables hotkeys for navigating backward and forward through your code!
 
+includes a Sidebar to see your navigation history
+
 ## Details
 
 This was designed to emulate the Navigate>Back/Forward functionality you'd typically see in other IDEs.

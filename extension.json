@@ -75,15 +75,10 @@
                "name": "Navigation History",
                "allowMultiple": false,
                "headerCommands": [
-                  {
-                     "command": "clearJumpList",
-                     "title": "Clear",
-                     "tooltip": "Clears all entries from the jump list; a full reset."
-                  }
                ]
             }
          ]
       }
    ],
-   "version": "1.0.5"
+   "version": "1.1"
 }

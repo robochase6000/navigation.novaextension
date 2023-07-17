@@ -1,3 +1,7 @@
+## Version 1.1
+
+Sidebar added where you can see your navigation history.  Double click entries in the sidebar to go there.
+
 ## Version 1.0.5
 
 add additional hotkeys to jump forward/backward 1 file at a time, skipping over history entries in between
