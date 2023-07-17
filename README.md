@@ -6,6 +6,8 @@ This an extension for the Nova IDE that enables hotkeys for navigating backward 
 
 includes a Sidebar to see your navigation history
 
+![Sidebar](./sidebar.png "Sidebar")
+
 ## Details
 
 This was designed to emulate the Navigate>Back/Forward functionality you'd typically see in other IDEs.
@@ -19,6 +21,7 @@ Some care has been taken to ensure this works alright in Split views, but as of 
 | **Navigate Backward 1 File**  | `Shift-option-⌘--`     | "Shift+Option+Command+Minus"  |
 | **Navigate Forward 1 File**   | `Shift-option-⌘-=`     | "Shift+Option+Command+Equals" |
 
+![Menu Commands](./menu-commands.png "Menu Commands")
 
 This extension is making some guesses whether you've opened a file, or moved your cursor in a 100ms loop.  
 

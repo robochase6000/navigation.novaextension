@@ -1,6 +1,12 @@
-## Version 1.1
+## Version 1.1.1
 
-Sidebar added where you can see your navigation history.  Double click entries in the sidebar to go there.
+Navigation Sidebar improvements. 
+
+Bug fix: Navigation Sidebar now keeps the current entry in focus instead of always auto-scrolling the top
+
+## Version 1.1.0
+
+Navigation Sidebar added where you can see your navigation history.  Double click entries in the sidebar to go there.
 
 ## Version 1.0.5
 

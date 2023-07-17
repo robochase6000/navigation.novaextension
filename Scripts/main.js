@@ -96,18 +96,7 @@ nova.commands.register("navigation.forwardOneWaypoint", (editor) => { navigateFo
 nova.commands.register("navigation.backOneWaypoint", (editor) => { navigateBackward_Waypoint() });
 nova.commands.register("navigation.forwardOneFile", (editor) => { navigateForward_File() });
 nova.commands.register("navigation.backOneFile", (editor) => { navigateBackward_File() });
-nova.commands.register("navigation.jumpTo", (_) => {
-  
-    selectedWaypoint = treeView.selection[0]
-    previousWaypoint = trail[currentIndex]
-    currentIndex = trail.indexOf(selectedWaypoint)
-    
-    dataProvider.setCurrentIndex(currentIndex)
-    treeView.reload()
-    newWaypoint = trail[currentIndex]
-    navigatingToDifferentFile = previousWaypoint.path != newWaypoint.path
-    openWaypoint(trail[currentIndex])
-});
+nova.commands.register("navigation.navigateToSelection", (_) => { navigateToSelection() });
 
 
 //========================================================
@@ -203,7 +192,7 @@ function checkCurrentFile()
 }
 
 //========================================================
-// helpers
+// navigation
 //========================================================
 function navigateForward_Waypoint()
 {
@@ -222,9 +211,7 @@ function navigateForward_Waypoint()
         return
     }
     
-    currentIndex = newIndex
-    dataProvider.setCurrentIndex(currentIndex)
-    treeView.reload()
+    handleCurrentIndexChanged(newIndex)
     
     if (currentIndex >= 0 && currentIndex < trail.length)
     {
@@ -265,9 +252,7 @@ function navigateBackward_Waypoint()
         return
     }
     
-    currentIndex = newIndex
-    dataProvider.setCurrentIndex(currentIndex)
-    treeView.reload()
+    handleCurrentIndexChanged(newIndex)
     
     if (currentIndex >= 0 && currentIndex < trail.length)
     {
@@ -306,9 +291,7 @@ function navigateForward_File()
         if (waypoint.path != currentWaypoint.path)
         {
             navigatingToDifferentFile = true
-            currentIndex = i
-            dataProvider.setCurrentIndex(currentIndex)
-            treeView.reload()
+            handleCurrentIndexChanged(i)
             
             if (debugOptions.logNavigationMessages)
             {
@@ -338,9 +321,7 @@ function navigateBackward_File()
         if (waypoint.path != currentWaypoint.path)
         {
             navigatingToDifferentFile = true
-            currentIndex = i
-            dataProvider.setCurrentIndex(currentIndex)
-            treeView.reload()
+            handleCurrentIndexChanged(i)
             
             if (debugOptions.logNavigationMessages)
             {
@@ -354,6 +335,22 @@ function navigateBackward_File()
     }
 }
 
+function navigateToSelection()
+{
+    var selectedWaypoint = treeView.selection[0]
+    var previousWaypoint = trail[currentIndex]
+    var newIndex = trail.indexOf(selectedWaypoint)
+    
+    handleCurrentIndexChanged(newIndex)
+    
+    var newWaypoint = trail[currentIndex]
+    navigatingToDifferentFile = previousWaypoint.path != newWaypoint.path
+    openWaypoint(trail[currentIndex])
+};
+
+//========================================================
+// navigation
+//========================================================
 function openWaypoint(waypoint) 
 {
     if (waypoint) 
@@ -375,11 +372,10 @@ function push(waypoint)
     }
     
     trail.push(waypoint);
-    currentIndex = trail.length - 1// pushing should always put as at the end of the trail
-    
     dataProvider.setWaypoints(trail)
-    dataProvider.setCurrentIndex(currentIndex)
-    treeView.reload()
+    
+    var newIndex = trail.length - 1// pushing should always put as at the end of the trail
+    handleCurrentIndexChanged(newIndex)
     
     if (trail.length > historySize)
     {
@@ -387,12 +383,11 @@ function push(waypoint)
         trail.splice(0, amountToRemove)
         
         // slide our index over, and clamp to stay in bounds.  i think this is all that's needed?
-        currentIndex -= amountToRemove 
-        currentIndex = clamp(currentIndex, 0, trail.length - 1)
-        dataProvider.setCurrentIndex(currentIndex)
-        treeView.reload()
+        newIndex = currentIndex
+        newIndex -= amountToRemove 
+        newIndex = clamp(currentIndex, 0, trail.length - 1)
+        handleCurrentIndexChanged(newIndex)
     }
-    
     
     logTrailMessage("pushed", waypoint)
 }
@@ -407,16 +402,6 @@ function replaceLastWaypointWith(newWaypoint)
     {
         logTrailMessage("replaced", newWaypoint)
     }
-}
-
-function relativePath(path) 
-{
-    return nova.workspace.relativizePath(path);
-}
-
-function trailChoices(trail) 
-{
-    return trail.map((waypoint) => `${relativePath(waypoint.path)} (line ${waypoint.line}, col ${waypoint.column})`);
 }
 
 function waypoint(editor) 
@@ -442,10 +427,14 @@ function waypoint(editor)
     };
 }
 
-function goToJump(jumpIndex, dataProvider, treeView) {
-      console.log("goToJump")
-  }
-
+function handleCurrentIndexChanged(index)
+{
+    currentIndex = index
+    dataProvider.setCurrentIndex(index)
+    treeView.reload().then((result) => {
+        treeView.reveal(trail[currentIndex], {focus:true})
+    })
+}
 
 //========================================================
 // logging

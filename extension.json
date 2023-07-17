@@ -27,11 +27,6 @@
             "command": "navigation.backOneFile",
             "when": "*",
             "shortcut": "shift-opt-cmd--"
-         },
-         {
-            "title": "Jump To...",
-            "command": "navigation.jiumpTo",
-            "when": "*"
          }
       ]
    },
@@ -80,5 +75,5 @@
          ]
       }
    ],
-   "version": "1.1"
+   "version": "1.1.1"
 }
