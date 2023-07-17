@@ -1,3 +1,7 @@
+## Version 1.1.3
+
+Fix broken images in README :/
+
 ## Version 1.1.2
 
 Fix broken images in README
