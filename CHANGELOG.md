@@ -1,3 +1,8 @@
+## Version 1.1.4
+
+Expose new Preference: New Entry Distance In Lines
+This new preference governs how frequently a new entry is created if you move to a different line within the same file. Increasing this value can result in less interstitial history entries being created.
+
 ## Version 1.1.3
 
 Fix broken images in README :/

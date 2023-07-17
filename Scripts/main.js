@@ -88,6 +88,10 @@ function setLogDebugMessagesEnabled(newValue, forceUpdate)
     }
 }
 
+newEntryDistanceInLines = nova.config.get("navigation.newEntryDistanceInLines")
+nova.config.onDidChange("navigation.newEntryDistanceInLines", (newValue, oldValue) => {
+    newEntryDistanceInLines = newValue
+})
 
 //========================================================
 // commands
@@ -165,7 +169,7 @@ function checkCurrentFile()
 
     // if we're 2+ units away, make a new waypoint
     // disregard column diff here, on purpose, it creates too many entries if you're typing fast, and this isn't what rider does.
-    if (lineDiff > 1/* || columnDiff > 1*/)
+    if (lineDiff >= newEntryDistanceInLines/* || columnDiff > 1*/)
     {
         
         var activeSelectionRange = newWaypoint.selectionStart - newWaypoint.selectionEnd
@@ -173,7 +177,7 @@ function checkCurrentFile()
         {
             if (debugOptions.logChangeMessages)
             {
-                console.log("2+ units away, pushing waypoint...")
+                console.log(newEntryDistanceInLines + "+ units away, pushing waypoint...")
             }
             push(newWaypoint)    
         }
