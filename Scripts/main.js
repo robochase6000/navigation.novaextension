@@ -150,6 +150,32 @@ function checkCurrentFile()
     }
     
     currentWaypoint = trail[currentIndex]
+    if (currentWaypoint == null)
+    {
+        // up to this point in the execution, it's assumed that the TextEditor you're working with already had a saved file in it, and hence should have at least one valid waypoint already
+        // but if you've made a new TextEditor to make a New File, there isn't actually a valid waypoint yet.
+        // a better fix would probably be to listen for TextEditor.onDidSave, but i don't want to mess with disposables and callbacks yet when a simple fix can get the job done.
+        // the fix: if we have an active text editor here, simply push a new waypoint and try again.
+        if (nova.workspace.activeTextEditor != null) 
+        {
+            lastActiveTextEditor = nova.workspace.activeTextEditor;
+            currentWaypoint = createWaypoint(lastActiveTextEditor)
+            if (currentWaypoint != null)
+            {
+                if (debugOptions.logChangeMessages)
+                {
+                    console.log("new text editor, pushing waypoint...")  
+                }
+                
+                push(currentWaypoint)
+            }
+            
+            if (currentWaypoint == null)
+            {
+                return// we still haven't saved yet i guess?
+            }
+        }
+    }
     
     // if we're in different files, make a new waypoint (i don't believe this should happen)
     if (newWaypoint.path != currentWaypoint.path)

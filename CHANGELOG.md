@@ -1,3 +1,7 @@
+## Version 1.1.5
+
+fix null error when making and then saving a new file - https://github.com/robochase6000/navigation.novaextension/issues/1
+
 ## Version 1.1.4
 
 Expose new Preference: New Entry Distance In Lines
