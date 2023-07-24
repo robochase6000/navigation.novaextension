@@ -84,6 +84,24 @@ nova.config.onDidChange("navigation.newEntryDistanceInLines", (newValue, oldValu
 
 
 //========================================================
+// SIDEBAR ENABLED
+//========================================================
+var sidebarEnabled = nova.config.get("navigation.sidebarEnabled")
+nova.config.onDidChange("navigation.sidebarEnabled", (newValue, oldValue) => {
+    sidebarEnabled = newValue
+})
+
+
+//========================================================
+// AUTO-REVEAL FOCUSED INDEX
+//========================================================
+var autoRevealFocusedIndex = nova.config.get("navigation.autoRevealFocusedIndex")
+nova.config.onDidChange("navigation.autoRevealFocusedIndex", (newValue, oldValue) => {
+    autoRevealFocusedIndex = newValue
+})
+
+
+//========================================================
 // commands
 //========================================================
 nova.commands.register("navigation.forwardOneWaypoint", (editor) => { navigateForward_Waypoint() });
@@ -405,7 +423,11 @@ function push(waypoint)
     }
     
     trail.push(waypoint);
-    dataProvider.setWaypoints(trail)
+    
+    if (sidebarEnabled)
+    {
+        dataProvider.setWaypoints(trail)    
+    }
     
     var newIndex = trail.length - 1// pushing should always put as at the end of the trail
     handleCurrentIndexChanged(newIndex)
@@ -429,8 +451,16 @@ function push(waypoint)
 function replaceLastWaypointWith(newWaypoint)
 {
     trail[trail.length - 1] = newWaypoint
-    dataProvider.setWaypoints(trail)
-    treeView.reload()
+    
+    if (sidebarEnabled)
+    {
+        dataProvider.setWaypoints(trail)
+    }
+    
+    if (sidebarEnabled)
+    {
+        treeView.reload()    
+    }
     
     if (debugOptions.logWaypointReplacements)
     {
@@ -471,11 +501,27 @@ function handleCurrentIndexChanged(index)
 {
     var prevIndex = currentIndex
     currentIndex = index
-    dataProvider.setCurrentIndex(index)
     
-    treeView.reload().then((result) => {
-        treeView.reveal(trail[currentIndex], {focus:true})
-    })
+    if (sidebarEnabled)
+    {
+        dataProvider.setCurrentIndex(index)
+        
+        if (autoRevealFocusedIndex)
+        {
+            treeView.reload().then(handleTreeReloaded)
+        }
+        else 
+        {
+            treeView.reload()
+        }
+    }
+}
+
+const focusConst = {focus:true}
+
+function handleTreeReloaded(result)
+{
+    treeView.reveal(trail[currentIndex], focusConst)
 }
 
 

@@ -1,3 +1,11 @@
+## Version 1.1.7
+
+adding new Preferences to disable the Sidebar
+
+## Version 1.1.6
+
+cleaning up some code, and removing unnecessary bits
+
 ## Version 1.1.5
 
 fix null error when making and then saving a new file - https://github.com/robochase6000/navigation.novaextension/issues/1

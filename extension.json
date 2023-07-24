@@ -54,6 +54,22 @@
          "default": false,
          "title": "Log Debug Messages",
          "description":  "If enabled, messages about activity should start appearing in the Extension Console."
+      },
+      {
+         "key": "navigation.sidebarEnabled",
+         "type": "bool",
+         "required": true,
+         "default": true,
+         "title": "Sidebar Updates Enabled",
+         "description":  "whether the sidebar should be updated. Turning this off may be more optimal."
+      },
+      {
+         "key": "navigation.autoRevealFocusedIndex",
+         "type": "bool",
+         "required": true,
+         "default": true,
+         "title": "Auto Reveal Focused Index",
+         "description":  "When a new entry is added to the sidebar, enabling this will have scroll the sidebar to this index. Turning this off may be more optimal."
       }
    ],
    "description": "Enables hotkeys for navigating backward and forward through your code!",
@@ -83,5 +99,5 @@
          ]
       }
    ],
-   "version": "1.1.5"
+   "version": "1.1.7"
 }
