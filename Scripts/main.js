@@ -5,9 +5,23 @@
 //========================================================
 
 const { NavigationHistoryDataProvider } = require('./NavigationHistoryDataProvider');
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 var treeView = null;
 var dataProvider = null;
+
+var debugOptions = {
+    logChangeMessages:false,
+    logHistory:false,
+    logNavigationMessages:false,
+    logWaypointReplacements:false, // this is spammy, best left off
+}
+
+var intervalDurationInMilliseconds = 100
+var trail = [];
+var currentIndex = -1
+var lastActiveTextEditor = null;
+var navigatingToDifferentFile = false
 
 exports.activate = function () {
     // Provided by the extension code
@@ -17,51 +31,19 @@ exports.activate = function () {
     treeView = new TreeView("navigation.history.entries", {
         dataProvider: dataProvider
     });
-    
-    treeView.onDidChangeSelection((selection) => {
-        // console.log("New selection: " + selection.map((e) => e.name));
-    });
-    
-    treeView.onDidExpandElement((element) => {
-        // console.log("Expanded: " + element.name);
-    });
-    
-    treeView.onDidCollapseElement((element) => {
-        // console.log("Collapsed: " + element.name);
-    });
-    
-    treeView.onDidChangeVisibility(() => {
-        // console.log("Visibility Changed");
-    });
-    
+   
     // TreeView implements the Disposable interface
     nova.subscriptions.add(treeView);
 };
 exports.deactivate = function () {};
-const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
 
 console.log("navigation.novaextension init")
 
-debugOptions = {
-    logChangeMessages:false,
-    logHistory:false,
-    logNavigationMessages:false,
-    logWaypointReplacements:false, // this is spammy, best left off
-}
-
-intervalDurationInMilliseconds = 100
-trail = [];
-currentIndex = -1
-lastActiveTextEditor = null;
-navigatingToDifferentFile = false
-
 
 //========================================================
-// configs
+// history size
 //========================================================
-// HISTORY SIZE
-historySize = nova.config.get("navigation.historySize")
+var historySize = nova.config.get("navigation.historySize")
 nova.config.onDidChange("navigation.historySize", (newValue, oldValue) => { 
     if (historySize != newValue)
     {
@@ -70,8 +52,11 @@ nova.config.onDidChange("navigation.historySize", (newValue, oldValue) => {
     }
 })
 
+
+//========================================================
 // LOGGING DEBUG MESSAGES
-logDebugMessages = nova.config.get("navigation.logDebugMessages")
+//========================================================
+var logDebugMessages = nova.config.get("navigation.logDebugMessages")
 setLogDebugMessagesEnabled(logDebugMessages, true)
 nova.config.onDidChange("navigation.logDebugMessages", (newValue, oldValue) => { 
     setLogDebugMessagesEnabled(newValue, false)
@@ -88,10 +73,15 @@ function setLogDebugMessagesEnabled(newValue, forceUpdate)
     }
 }
 
-newEntryDistanceInLines = nova.config.get("navigation.newEntryDistanceInLines")
+
+//========================================================
+// NEW ENTRY DISTANCE
+//========================================================
+var newEntryDistanceInLines = nova.config.get("navigation.newEntryDistanceInLines")
 nova.config.onDidChange("navigation.newEntryDistanceInLines", (newValue, oldValue) => {
     newEntryDistanceInLines = newValue
 })
+
 
 //========================================================
 // commands
@@ -143,13 +133,13 @@ setInterval(function () {
 function checkCurrentFile()
 {
     // if we moved within the file, replace the last waypoint
-    newWaypoint = createWaypoint(lastActiveTextEditor)
+    const newWaypoint = createWaypoint(lastActiveTextEditor)
     if (newWaypoint == null)
     {
         return
     }
     
-    currentWaypoint = trail[currentIndex]
+    var currentWaypoint = trail[currentIndex]
     if (currentWaypoint == null)
     {
         // up to this point in the execution, it's assumed that the TextEditor you're working with already had a saved file in it, and hence should have at least one valid waypoint already
@@ -190,15 +180,14 @@ function checkCurrentFile()
     
     // we're in the same file.
     // how far did the cursor move within this file?
-    lineDiff = Math.abs(newWaypoint.line - currentWaypoint.line)
-    columnDiff = Math.abs(newWaypoint.column - currentWaypoint.column)
+    const lineDiff = Math.abs(newWaypoint.line - currentWaypoint.line)
+    const columnDiff = Math.abs(newWaypoint.column - currentWaypoint.column)
 
     // if we're 2+ units away, make a new waypoint
     // disregard column diff here, on purpose, it creates too many entries if you're typing fast, and this isn't what rider does.
     if (lineDiff >= newEntryDistanceInLines/* || columnDiff > 1*/)
     {
-        
-        var activeSelectionRange = newWaypoint.selectionStart - newWaypoint.selectionEnd
+        const activeSelectionRange = newWaypoint.selectionStart - newWaypoint.selectionEnd
         if (activeSelectionRange == 0)
         {
             if (debugOptions.logChangeMessages)
@@ -423,7 +412,7 @@ function push(waypoint)
     
     if (trail.length > historySize)
     {
-        var amountToRemove = trail.length - historySize
+        const amountToRemove = trail.length - historySize
         trail.splice(0, amountToRemove)
         
         // slide our index over, and clamp to stay in bounds.  i think this is all that's needed?
@@ -480,12 +469,15 @@ function createWaypoint(editor)
 
 function handleCurrentIndexChanged(index)
 {
+    var prevIndex = currentIndex
     currentIndex = index
     dataProvider.setCurrentIndex(index)
+    
     treeView.reload().then((result) => {
         treeView.reveal(trail[currentIndex], {focus:true})
     })
 }
+
 
 //========================================================
 // logging

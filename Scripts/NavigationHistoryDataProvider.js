@@ -47,9 +47,8 @@ class NavigationHistoryDataProvider
         );
         
         item.descriptiveText = element.line;
-        //item.tooltip = "this is a tooltip"//element.humanReadable[getConfigItem("jumpList.tooltip.content")];
         item.command = "navigation.navigateToSelection";
-        item.identifier = element.position;
+        //item.identifier = element.position;
         item.image = null
         
         item.color = this._waypoints.indexOf(element) === this._currentJumpPosition ?
