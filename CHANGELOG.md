@@ -1,3 +1,7 @@
+## Version 1.1.9.1
+
+more error fixes
+
 ## Version 1.1.9
 
 attempt to fix null errors when opening a new document

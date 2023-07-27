@@ -489,9 +489,16 @@ function createWaypoint(editor)
         return null
     }
     
-    const text = editor.document.getTextInRange(
-        new Range(0, editor.document.length)
-    );
+    var text = ""
+    try 
+    {
+        text = editor.document.getTextInRange(new Range(0, editor.document.length));
+    } 
+    catch (error) 
+    {
+        return null// something is broken...
+    }
+    
     const selectionStart = editor.selectedRange.start
     const selectionEnd = editor.selectedRange.end
     const cursorPosition = selectionStart;
