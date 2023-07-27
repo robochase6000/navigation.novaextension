@@ -69,7 +69,7 @@
          "required": true,
          "default": true,
          "title": "Auto Reveal Focused Index",
-         "description":  "When a new entry is added to the sidebar, enabling this will have scroll the sidebar to this index. Turning this off may be more optimal."
+         "description":  "When a new entry is added to the sidebar, enabling this will scroll the sidebar to this index, revealing it. Turning this off may be more optimal."
       }
    ],
    "description": "Enables hotkeys for navigating backward and forward through your code!",
@@ -99,5 +99,5 @@
          ]
       }
    ],
-   "version": "1.1.7"
+   "version": "1.1.9"
 }

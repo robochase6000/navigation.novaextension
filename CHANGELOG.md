@@ -1,3 +1,11 @@
+## Version 1.1.9
+
+attempt to fix null errors when opening a new document
+
+## Version 1.1.8
+
+fix typo in preferences
+
 ## Version 1.1.7
 
 adding new Preferences to disable the Sidebar

@@ -470,8 +470,21 @@ function replaceLastWaypointWith(newWaypoint)
 
 function createWaypoint(editor) 
 {
+    if (editor == null || editor.document == null)
+    {
+        return null
+    }
+    
+    if (editor.document.isClosed 
+        || editor.document.isEmpty 
+        || editor.document.isUntitled 
+        || editor.document.length == 0)
+    {
+        return null
+    }
+    
     const path = editor.document.path;
-    if (path == null || path == "")
+    if (path == null || path == "" )
     {
         return null
     }
